@@ -134,14 +134,21 @@ function aggregate_farm_rows(array $rows, string $dimension): array
     return $counts;
 }
 
+function read_local_config(string $path): array
+{
+    if (!is_file($path)) {
+        return [];
+    }
+    $loaded = require $path;
+    return is_array($loaded) ? $loaded : [];
+}
+
 function google_maps_api_key(): string
 {
     $environmentKey = getenv('GOOGLE_MAPS_API_KEY');
     $key = is_string($environmentKey) ? trim($environmentKey) : '';
     if ($key === '') {
-        $path = __DIR__ . '/config/maps.local.php';
-        if (!is_file($path)) return '';
-        $config = require $path;
+        $config = read_local_config(__DIR__ . '/config/maps.local.php');
         $key = is_string($config) ? trim($config) : (is_array($config) ? trim((string)($config['google_maps_api_key'] ?? '')) : '');
     }
     return str_starts_with(strtoupper($key), 'REPLACE_') ? '' : $key;
@@ -155,25 +162,27 @@ function db(): PDO
 {
     static $pdo;
     if ($pdo instanceof PDO) return $pdo;
-    $config = [];
-    $configPath = __DIR__ . '/config/local.php';
-    if (is_file($configPath)) {
-        $loaded = require $configPath;
-        if (is_array($loaded)) $config = $loaded;
-    }
+
+    $config = read_local_config(__DIR__ . '/config/local.php');
     $dsn = getenv('DB_DSN') ?: (string)($config['dsn'] ?? '');
     if ($dsn === '' && !empty($config['host']) && !empty($config['database'])) {
         $port = (int)(getenv('DB_PORT') ?: ($config['port'] ?? 0));
         $dsn = 'mysql:host=' . $config['host'] . ($port > 0 ? ';port=' . $port : '') . ';dbname=' . $config['database'] . ';charset=utf8mb4';
     }
+
     $user = getenv('DB_USER') ?: (string)($config['username'] ?? '');
     $password = getenv('DB_PASSWORD') ?: (string)($config['password'] ?? '');
-    if ($dsn === '') throw new RuntimeException('Connexion SQL manquante. Configurez DB_DSN ou config/local.php.');
+
+    if ($dsn === '') {
+        throw new RuntimeException('Connexion SQL manquante. Configurez DB_DSN ou config/local.php.');
+    }
+
     $pdo = new PDO($dsn, $user, $password, [
         PDO::ATTR_ERRMODE => PDO::ERRMODE_EXCEPTION,
         PDO::ATTR_DEFAULT_FETCH_MODE => PDO::FETCH_ASSOC,
         PDO::ATTR_EMULATE_PREPARES => false,
     ]);
+
     return $pdo;
 }
 
@@ -212,7 +221,7 @@ function pagination_html(string $label, string $pageKey, int $currentPage, int $
     $next = $currentPage < $totalPages
         ? '<a class="btn secondary" href="' . e($urlFor($currentPage + 1)) . '" aria-label="Page suivante">Suivante →</a>'
         : '<span class="btn secondary is-disabled" aria-disabled="true">Suivante →</span>';
-    return '<nav class="pagination" aria-label="' . e($label) . '"><span class="pagination-info">' . $first . '–' . $last . ' sur ' . $totalRows . ' ' . e($noun) . '</span><div class="pagination-actions">' . $previous . '<span class="pagination-page">Page ' . $currentPage . ' / ' . $totalPages . '</span>' . $next . '</div></nav>';
+    return '<nav class="pagination" aria-label="' . e($label) . '"><span class="pagination-info">' . $first . '–' . $last . ' sur ' . $totalRows . ' ' . e($noun) . '</span><div class="pagination-controls">' . $previous . $next . '</div></nav>';
 }
 
 function scope_clause(array $user, string $alias = 'f'): array
@@ -255,7 +264,7 @@ function current_user(): ?array
         return null;
     }
     $_SESSION['last_activity'] = $now;
-    $stmt = db()->prepare('SELECT u.id, u.email, u.full_name, u.role, u.region_id, u.province_id, r.name AS region_name, p.name AS province_name FROM users u LEFT JOIN regions r ON r.id=u.region_id LEFT JOIN provinces p ON p.id=u.province_id WHERE u.id=:id AND u.active=1');
+    $stmt = db()->prepare('SELECT u.id, u.email, u.full_name, u.role, u.region_id, u.province_id, r.name AS region_name, p.name AS province_name FROM users u LEFT JOIN regions r ON r.id=u.region_id LEFT JOIN provinces p ON p.id=u.province_id WHERE u.id=:id');
     $stmt->execute([':id' => (int)$_SESSION['user_id']]);
     $user = $stmt->fetch();
     if (!$user) { clear_current_session(); return null; }
@@ -398,5 +407,3 @@ function geography_rows(array $user): array
     foreach ($rows as $row) $regions[(int)$row['region_id']] = $row['region_name'];
     return ['rows' => $rows, 'regions' => $regions];
 }
-
-

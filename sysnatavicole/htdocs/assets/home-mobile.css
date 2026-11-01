@@ -1,0 +1,42 @@
+html body.home-page>header{background-color:#17482f;background-image:linear-gradient(120deg,#143d2a 0%,#1e6946 62%,#28734f 100%);background-position:center;background-size:cover}
+.home-mobile-copy,.home-intro-mobile,.home-mobile-summary,.home-mobile-tool-links{display:none}
+@media(max-width:767px){
+  html body.home-page{background:#f3f6ed}
+  html body.home-page>header{background-color:#17482f;background-image:linear-gradient(135deg,#143d2a 0%,#1e6946 72%,#28734f 100%);background-position:center;background-size:cover;border-bottom:2px solid #efbd4f;box-shadow:0 6px 18px rgba(20,55,39,.18)}
+  html body.home-page>header:after{opacity:.24;background:radial-gradient(circle at 88% 12%,rgba(239,189,79,.42),transparent 34%)}
+  html body.home-page .home-hero{margin:2px 0 20px;padding:22px 18px;border:1px solid #2b6e4c;border-bottom:3px solid #efbd4f;border-radius:16px;background:linear-gradient(145deg,#123f2d 0%,#1b6745 62%,#28734f 100%);box-shadow:0 10px 24px rgba(21,74,48,.16)}
+  html body.home-page .home-hero::before{opacity:1;background:radial-gradient(circle at 92% 8%,rgba(239,189,79,.22),transparent 36%),linear-gradient(115deg,rgba(8,35,24,.12),transparent 72%)}
+  html body.home-page .home-eyebrow{display:inline-block;max-width:100%;white-space:normal;line-height:1.35}
+  html body.home-page .home-desktop-copy{display:none!important}
+  html body.home-page .home-mobile-copy{display:inline!important}
+  html body.home-page .home-intro-desktop{display:none!important}
+  html body.home-page .home-intro-mobile{display:block!important;margin:0;color:#f4f8f2;font-size:14px;line-height:1.5}
+  html body.home-page .home-hero h1{max-width:560px;margin:12px 0 9px;color:#fff;font-size:clamp(25px,7vw,30px);line-height:1.13;letter-spacing:-.03em}
+  html body.home-page .home-hero-logo{width:56px;height:56px;margin-bottom:7px}
+  html body.home-page .home-presentation{margin:0 0 18px}
+  html body.home-page .home-section-heading{display:block;margin:0 0 11px}
+  html body.home-page .home-section-heading .eyebrow{color:#52725b;font-size:10px}
+  html body.home-page .home-section-heading h2{margin:4px 0 0;color:#173e2b;font-size:21px;line-height:1.2;letter-spacing:-.02em}
+  html body.home-page .home-tool-grid{grid-template-columns:minmax(0,1fr);gap:9px}
+  html body.home-page .home-tool{display:grid;grid-template-columns:38px minmax(0,1fr);align-items:start;gap:0 12px;min-width:0;padding:13px 14px;border:1px solid #dce7d8;border-radius:13px;background:#fffefa;box-shadow:0 4px 12px rgba(27,65,41,.055)}
+  html body.home-page .home-tool>span{display:grid;place-items:center;width:36px;height:36px;margin:1px 0 0;border:1px solid #e3d49e;border-radius:11px;background:#f5edcf;color:#245b40;font-size:20px}
+  html body.home-page .home-tool-copy{min-width:0}
+  html body.home-page .home-tool h3{margin:0 0 3px;color:#204631;font-size:15px;line-height:1.25}
+  html body.home-page .home-tool p.home-desktop-summary{display:none!important}
+  html body.home-page .home-tool p.home-mobile-summary{display:block!important;margin:0;color:#53695a;font-size:13px;line-height:1.4}
+  html body.home-page .home-mobile-tool-links{display:flex;flex-wrap:wrap;gap:7px;margin-top:9px}
+  html body.home-page .home-mobile-tool-link{display:inline-flex;flex:1 1 auto;align-items:center;justify-content:center;min-height:44px;padding:8px 11px;border:1px solid #cbdcc9;border-radius:10px;background:#e8f1df;color:#23573c;font-size:13px;font-weight:700;line-height:1.25;text-align:center;text-decoration:none}
+  html body.home-page .home-mobile-tool-link:focus-visible{outline:2px solid #8b6b18;outline-offset:2px}
+  html body.home-page .home-section-heading>p{display:block!important;margin:10px 0 0;color:#53695a;font-size:13px;line-height:1.5}
+  html body.home-page .home-achievements{display:block!important;margin:15px 0 0;padding:15px;border:1px solid #dce7d8;border-radius:13px;background:#fffefa;box-shadow:0 4px 12px rgba(27,65,41,.055)}
+  html body.home-page .home-achievements h3{margin:0 0 6px;color:#204631;font-size:16px}
+  html body.home-page .home-achievements-intro{margin:0 0 8px;color:#53695a;font-size:13px;line-height:1.45}
+  html body.home-page .home-achievements ul{display:grid;gap:7px;margin:0;padding-left:19px;color:#53695a;font-size:13px;line-height:1.45}
+  html body.home-page .home-achievements li strong{color:#204631}
+}
+@media(max-width:400px){
+  html body.home-page .home-hero{padding:19px 15px}
+  html body.home-page .home-hero h1{font-size:25px}
+  html body.home-page .home-tool{padding:12px}
+}
+@media(max-width:767px){html body.home-page>header .brand strong{display:block;font-size:clamp(13px,3.7vw,16px);line-height:1.15;overflow-wrap:anywhere}}
